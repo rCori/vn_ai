@@ -1,0 +1,28 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While parsing C:\Users\Ryan\Documents\OpenAIPython\Omar is coming\game/script.rpy.
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x97 in position 2637: invalid start byte
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\bootstrap.py", line 359, in bootstrap
+    renpy.main.main()
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\main.py", line 470, in main
+    renpy.game.script.load_script() # sets renpy.game.script.
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\script.py", line 359, in load_script
+    self.load_appropriate_file(".rpyc", [ "_ren.py", ".rpy" ], dir, fn, initcode)
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\script.py", line 929, in load_appropriate_file
+    data, stmts = self.load_file(dir, fn + source)
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\script.py", line 721, in load_file
+    stmts = renpy.parser.parse(fullfn)
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\parser.py", line 1676, in parse
+    lines = list_logical_lines(fn, filedata, linenumber)
+  File "C:\Users\Ryan\Downloads\renpy-8.3.0-sdk\renpy\lexer.py", line 298, in list_logical_lines
+    data = f.read().decode("utf-8", "python_strict")
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x97 in position 2637: invalid start byte
+
+Windows-10-10.0.19045 AMD64
+Ren'Py 8.3.0.24082114
+Omar is coming 1.0
+Mon Oct 14 22:12:17 2024
