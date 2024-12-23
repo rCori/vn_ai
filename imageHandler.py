@@ -7,7 +7,6 @@ import requests
 from PIL import Image
 
 class ImageHandler:
-
     def downloadImage(self, url, local_filename):
         response = requests.get(url)
 

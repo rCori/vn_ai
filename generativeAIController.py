@@ -1,3 +1,9 @@
+"""
+generativeAIController handles interfacing with any AI service. Currently that is openAI's API.
+
+"""
+
+
 import re
 from openai import OpenAI
 
@@ -38,6 +44,11 @@ class GenerativeAIController:
         image_url = response.data[0].url
         print(image_url)
         return image_url
+
+    def generateCharacterImage(self, characterName):
+        print("Generating character image characterName...")
+        return False
+
 
     # Take trailing quotes off of the beginning and end of the content if they exist.
     def cleanScript(self,content):
