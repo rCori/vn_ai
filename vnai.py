@@ -30,7 +30,12 @@ def main():
 
     gameBuilder.createProjectFromTemplate()
     gameBuilder.createScript()
-    gameBuilder.createImages()
+    # gameBuilder.createImages()
+
+    gameBuilder.getBackgroundImages()
+    gameBuilder.createBackgroundImages()
+    gameBuilder.getCharacterImages()
+    gameBuilder.createCharacterImages()
 
 
     """  

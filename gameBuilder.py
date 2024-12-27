@@ -5,6 +5,7 @@ take in the command line input and the created project directory.
 
 import os
 import shutil
+import time
 from optionFlags import OptionFlags
 from generativeAIController import GenerativeAIController
 from scriptHandler import ScriptHandler
@@ -19,6 +20,7 @@ class GameBuilder:
         self._generativeAIController = GenerativeAIController()
         self._scriptHandler = ScriptHandler()
         self._imageHandler = ImageHandler()
+        self._imageCountRateLimit = 2
 
     # Getter and setter for name
     # Name is the name of the game being generated
@@ -92,6 +94,62 @@ class GameBuilder:
             # With the script we can make the script handler
             self._scriptHandler.script = script
             self._scriptHandler.replaceScript(self._gameName,script)
+
+    # Get all background images
+    def getBackgroundImages(self):
+        # Get list of all background images
+        self.backgroundImageNames = self._scriptHandler.scanForBackgroundImages()
+
+    def getCharacterImages(self):
+        self.characterImageNames = self._scriptHandler.scanForCharacterImages()
+
+    # Create background images
+    def createBackgroundImages(self):
+        if(self._options & OptionFlags.SKIP_BACKGROUND_IMAGE_GENERATION):
+            print("SKIP_BACKGROUND_IMAGE_GENERATION set. Skipping background image generation...")
+        else:
+            rateLimitCounter = 0
+            # Iterate over all background images
+            for i in range(len(self.backgroundImageNames)):
+                # Generate each background image
+                imageURL = self._generativeAIController.generateBackgroundScene(self.backgroundImageNames[i])
+                # Get the exact location of where the webp file will be downloaded
+                webpFilename = self._gameName+'/game/images/'+self.backgroundImageNames[i]+'.webp'
+                # Download each image
+                self._imageHandler.downloadImage(imageURL,webpFilename)
+                # Convert downloaded image to format we can use, png
+                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename)
+                # With a new image created and downloaded we must increment the rateLimitCounter
+                rateLimitCounter = rateLimitCounter + 1
+                # If the rate limit has been hit, pause for a full minute before continuinge
+                if(rateLimitCounter == self._imageCountRateLimit):
+                    print("Sleeping for rate limit")
+                    time.sleep(60)
+                    rateLimitCounter = 0
+
+    # Create character images
+    def createCharacterImages(self):
+        if(self._options & OptionFlags.SKIP_CHARACTER_IMAGE_GENERATION):
+            print("SKIP_CHARACTER_IMAGE_GENERATION set. Skipping character image generation...")
+        else:
+            rateLimitCounter = 0
+             # Iterate over all character images
+            for i in range(len(self.characterImageNames)):
+                # Generate each character image
+                imageURL = self._generativeAIController.generateCharacterImage(self.characterImageNames[i])
+                # Get the exact location of where the webp file will be downloaded
+                webpFilename = self._gameName+'/game/images/'+self.characterImageNames[i]+'.webp'
+                # Download each image
+                self._imageHandler.downloadImage(imageURL,webpFilename)
+                # Convert downloaded image to format we can use, png
+                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename)
+                # With a new image created and downloaded we must increment the rateLimitCounter
+                rateLimitCounter = rateLimitCounter + 1
+                # If the rate limit has been hit, pause for a full minute before continuinge
+                if(rateLimitCounter == self._imageCountRateLimit):
+                    print("Sleeping for rate limit")
+                    time.sleep(60)
+                    rateLimitCounter = 0
 
     # Create all images
     def createImages(self):

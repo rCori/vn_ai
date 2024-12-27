@@ -13,14 +13,14 @@ class GenerativeAIController:
         self.client = OpenAI()
 
     def generateScript(self):
-        completion =self.client.chat.completions.create(
+        completion = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {"role":"system", "content":"You are a helpful assistant."},
                 {
                     "role":"user",
                     "content":"The following is a story prompt for a visual novel. \
-                                Write this as a renpy script file. Code only:\
+                                Write this as a renpy script file. Code should have background and character images. Code only:\
                                 \"Omar is an aspiring Diddy Kong Racing for N64 speedrunner. \
                                 He is close to getting the world record and practices every day. \
                                 There is only one problem. His crush Patty Mayonnaise. He needs to ask her to the Winter Formal Dance coming up and he's so nervous he can hardly sleep. \
@@ -47,8 +47,19 @@ class GenerativeAIController:
 
     def generateCharacterImage(self, characterName):
         print("Generating character image characterName...")
-        return False
-
+        response = self.client.images.generate(
+            model="dall-e-2",
+            prompt="I have a renpy visual novel script. There is a character with this name :\
+                    \"patty mayonaise smile\" \
+                    Make a character image based on this name. Give it a vibrant anime style. \
+                    Make the background completely white, I only want to see the character",
+            n=1,
+            size="512x512",
+            quality="standard",
+        )
+        image_url = response.data[0].url
+        print(image_url)
+        return image_url
 
     # Take trailing quotes off of the beginning and end of the content if they exist.
     def cleanScript(self,content):
