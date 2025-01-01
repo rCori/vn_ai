@@ -30,6 +30,18 @@ class ScriptHandler:
         characterSet = self.searchImages(scenePattern)
         characterSet = [scene.removeprefix("show ") for scene in characterSet]
         return characterSet
+    
+    # Search for the declaration of an image
+    def scanForImageDeclaration(self, imageName):
+        realFp = ""
+        scenePattern = r"image " + imageName
+        for line in self.script.splitlines():
+            match = re.search(scenePattern,line)
+            if match:
+                imageDeclarationSplit = line.split("=")
+                realFp = imageDeclarationSplit[1].strip().strip("\"")
+                print("Found real filepath: " + realFp)
+        return realFp
 
     # Find all lines in the script that display a background scene
     # Return a set of unique scene names
@@ -45,6 +57,11 @@ class ScriptHandler:
         return sceneSet
     
     # Write the new script into the script.rpy file
-    def replaceScript(self,newName, newScript):
+    def replaceScript(self, newName, newScript):
         with open(newName+'/game/script.rpy', 'w', encoding="utf-8") as f:
             f.write(newScript)
+    
+    # Read and return the current script.rpy file
+    def openAndReturnScript(self,gameName):
+        with open(gameName+'/game/script.rpy', 'r', encoding="utf-8") as f:
+            return f.read()

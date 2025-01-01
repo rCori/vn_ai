@@ -87,6 +87,7 @@ class GameBuilder:
     def createScript(self):
         if(self._options & OptionFlags.SKIP_SCRIPT_GENERATION):
             print("SKIP_SCRIPT_GENERATION set. Skipping new script generation...")
+            self._scriptHandler.script = self._scriptHandler.openAndReturnScript(self._gameName)
             return
         else:
             # Use GenerativeAIController to write the new script
@@ -115,10 +116,12 @@ class GameBuilder:
                 imageURL = self._generativeAIController.generateBackgroundScene(self.backgroundImageNames[i])
                 # Get the exact location of where the webp file will be downloaded
                 webpFilename = self._gameName+'/game/images/'+self.backgroundImageNames[i]+'.webp'
+                # Check for image declaration
+                newFilepath = self._scriptHandler.scanForImageDeclaration(self.backgroundImageNames[i])
                 # Download each image
                 self._imageHandler.downloadImage(imageURL,webpFilename)
                 # Convert downloaded image to format we can use, png
-                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename)
+                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename,self._gameName+'/game/'+newFilepath)
                 # With a new image created and downloaded we must increment the rateLimitCounter
                 rateLimitCounter = rateLimitCounter + 1
                 # If the rate limit has been hit, pause for a full minute before continuinge
@@ -139,10 +142,12 @@ class GameBuilder:
                 imageURL = self._generativeAIController.generateCharacterImage(self.characterImageNames[i])
                 # Get the exact location of where the webp file will be downloaded
                 webpFilename = self._gameName+'/game/images/'+self.characterImageNames[i]+'.webp'
+                # Check for image declaration
+                newFilepath = self._scriptHandler.scanForImageDeclaration(self.characterImageNames[i])
                 # Download each image
                 self._imageHandler.downloadImage(imageURL,webpFilename)
                 # Convert downloaded image to format we can use, png
-                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename)
+                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename,self._gameName+'/game/'+newFilepath)
                 # With a new image created and downloaded we must increment the rateLimitCounter
                 rateLimitCounter = rateLimitCounter + 1
                 # If the rate limit has been hit, pause for a full minute before continuinge

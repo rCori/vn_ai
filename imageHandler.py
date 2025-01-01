@@ -4,6 +4,7 @@ It will handle downloading and converting them into the proper formats
 """
 
 import requests
+import os
 from PIL import Image
 
 class ImageHandler:
@@ -17,8 +18,15 @@ class ImageHandler:
         else:
             print(f"Failed to download image. Status code: {response.status_code}")
 
-    def convertWEBPBackgroundToPNG(self,filename):
+    def convertWEBPBackgroundToPNG(self,filename,newFilepath):
         image = Image.open(filename)
-        image.save(filename[:-4]+'jpg', 'JPEG')
+        # Get the new filepath for the name
+        filepathParts = os.path.split(newFilepath)
+        print("filepathParts")
+        print(filepathParts)
+        if(filepathParts[0] != ""):
+            os.makedirs(filepathParts[0],exist_ok=True)
+        #image.save(filename[:-4]+'jpg', 'JPEG')
+        image.save(newFilepath)
 
         
