@@ -20,6 +20,8 @@ def main():
                         action="store_true")
     parser.add_argument("--skip-background-image-generation", help='Do not generate new background images',
                         action="store_true")
+    parser.add_argument("--skip-character-image-generation", help='Do not generate new character images',
+                        action="store_true")
     args = parser.parse_args()
 
     gameBuilder = GameBuilder()
@@ -27,6 +29,7 @@ def main():
     gameBuilder.setOption(OptionFlags.SKIP_PROJECT_GENERATION, args.skip_project_generation)
     gameBuilder.setOption(OptionFlags.SKIP_SCRIPT_GENERATION, args.skip_script_generation)
     gameBuilder.setOption(OptionFlags.SKIP_BACKGROUND_IMAGE_GENERATION, args.skip_background_image_generation)
+    gameBuilder.setOption(OptionFlags.SKIP_CHARACTER_IMAGE_GENERATION, args.skip_character_image_generation)
 
     gameBuilder.createProjectFromTemplate()
     gameBuilder.createScript()
