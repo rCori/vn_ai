@@ -27,9 +27,11 @@ class ScriptHandler:
     
     def scanForCharacterImages(self):
         scenePattern = r"show\b\s.*"
+        removeSuffix = r" at.*"
         characterSet = self.searchImages(scenePattern)
-        characterSet = [scene.removeprefix("show ") for scene in characterSet]
-        return characterSet
+        characterSet = set([scene.removeprefix("show ") for scene in characterSet])
+        characterSet = set([re.sub(removeSuffix, "", scene) for scene in characterSet])
+        return list(characterSet)
     
     # Search for the declaration of an image
     def scanForImageDeclaration(self, imageName):

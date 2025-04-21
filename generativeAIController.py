@@ -20,7 +20,8 @@ class GenerativeAIController:
                 {
                     "role":"user",
                     "content":"The following is a story prompt for a visual novel. \
-                                Write this as a renpy script file. Code should have background and character images. Code only:\
+                                Write this as a renpy script file.  Code should have image statements \
+                                for background and character images. Code only:\
                                 \"Omar is an aspiring Diddy Kong Racing for N64 speedrunner. \
                                 He is close to getting the world record and practices every day. \
                                 There is only one problem. His crush Patty Mayonnaise. He needs to ask her to the Winter Formal Dance coming up and he's so nervous he can hardly sleep. \
@@ -33,12 +34,12 @@ class GenerativeAIController:
     
     def generateBackgroundScene(self,bgSceneName):
         response = self.client.images.generate(
-            model="dall-e-2",
+            model="dall-e-3",
             prompt="I have a renpy visual novel script. There is a background with this name:\
-                    \"bg room\" \
+                    \"" + bgSceneName +"\" \
                     Make a background image based on this name. Give it a vibrant anime style",
-            n=2,
-            size="1024x1024",
+            n=1,
+            size="1024x1792",
             quality="standard",
         )
         image_url = response.data[0].url
@@ -48,13 +49,13 @@ class GenerativeAIController:
     def generateCharacterImage(self, characterName):
         print("Generating character image characterName...")
         response = self.client.images.generate(
-            model="dall-e-2",
+            model="dall-e-3",
             prompt="I have a renpy visual novel script. There is a character with this name :\
-                    \"patty mayonaise smile\" \
+                    \"" + characterName + "\" \
                     Make a character image based on this name. Give it a vibrant anime style. \
                     Make the background completely white, I only want to see the character",
             n=1,
-            size="512x512",
+            size="1024x1024",
             quality="standard",
         )
         image_url = response.data[0].url

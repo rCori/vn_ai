@@ -100,9 +100,12 @@ class GameBuilder:
     def getBackgroundImages(self):
         # Get list of all background images
         self.backgroundImageNames = self._scriptHandler.scanForBackgroundImages()
+        
 
     def getCharacterImages(self):
+        # Get list of all character images
         self.characterImageNames = self._scriptHandler.scanForCharacterImages()
+        print("Character images to generate: " + ", ".join(self.characterImageNames))
 
     # Create background images
     def createBackgroundImages(self):
