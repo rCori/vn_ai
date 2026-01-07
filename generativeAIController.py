@@ -14,7 +14,7 @@ class GenerativeAIController:
 
     def generateScript(self):
         completion = self.client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5-nano",
             messages=[
                 {"role":"system", "content":"You are a helpful assistant."},
                 {
@@ -29,7 +29,10 @@ class GenerativeAIController:
                 }
             ]
         )
-        content = self.cleanScript(completion.choices[0].message.content)
+        
+        #content = self.cleanScript(completion.choices[0].message.content)
+        content = completion.choices[0].message.content
+        print(completion.choices[0].message.content)
         return content
     
     def generateBackgroundScene(self,bgSceneName):
@@ -47,7 +50,7 @@ class GenerativeAIController:
         return image_url
 
     def generateCharacterImage(self, characterName):
-        print("Generating character image characterName...")
+        print("Generating character image " +  characterName + "...")
         response = self.client.images.generate(
             model="dall-e-3",
             prompt="I have a renpy visual novel script. There is a character with this name :\

@@ -39,7 +39,5 @@ def main():
     gameBuilder.getCharacterImages()
     gameBuilder.createCharacterImages()
 
-
-
 if __name__ == "__main__":
     main()
