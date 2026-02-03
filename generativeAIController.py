@@ -36,18 +36,31 @@ class GenerativeAIController:
         return content
     
     def generateBackgroundScene(self,bgSceneName):
-        response = self.client.images.generate(
-            model="dall-e-3",
-            prompt="I have a renpy visual novel script. There is a background with this name:\
+        print("Generating background image " +  bgSceneName + "...")
+        response = self.client.responses.create(
+            model="gpt-5",
+            input="I have a renpy visual novel script. There is a background with this name:\
                     \"" + bgSceneName +"\" \
                     Make a background image based on this name. Give it a vibrant anime style",
-            n=1,
-            size="1024x1792",
-            quality="standard",
+            tools=[
+                {
+                    "type":"image_generation",
+                    "size":"1024x1024",
+                    "quality":"low",
+                }
+            ],
         )
-        image_url = response.data[0].url
-        print(image_url)
-        return image_url
+
+        image_data = [
+            output.result
+            for output in response.output
+            if output.type == "image_generation_call"
+        ]
+
+        return image_data
+        # image_url = response.data[0].url
+        # print(image_url)
+        # return image_url
 
     def generateCharacterImage(self, characterName):
         print("Generating character image " +  characterName + "...")

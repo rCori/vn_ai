@@ -115,23 +115,26 @@ class GameBuilder:
             rateLimitCounter = 0
             # Iterate over all background images
             for i in range(len(self.backgroundImageNames)):
-                # Generate each background image
-                imageURL = self._generativeAIController.generateBackgroundScene(self.backgroundImageNames[i])
-                # Get the exact location of where the webp file will be downloaded
-                webpFilename = self._gameName+'/game/images/'+self.backgroundImageNames[i]+'.webp'
-                # Check for image declaration
+                image_data = self._generativeAIController.generateBackgroundScene(self.backgroundImageNames[i])
                 newFilepath = self._scriptHandler.scanForImageDeclaration(self.backgroundImageNames[i])
-                # Download each image
-                self._imageHandler.downloadImage(imageURL,webpFilename)
-                # Convert downloaded image to format we can use, png
-                self._imageHandler.convertWEBPBackgroundToPNG(webpFilename,self._gameName+'/game/'+newFilepath)
-                # With a new image created and downloaded we must increment the rateLimitCounter
-                rateLimitCounter = rateLimitCounter + 1
-                # If the rate limit has been hit, pause for a full minute before continuinge
-                if(rateLimitCounter == self._imageCountRateLimit):
-                    print("Sleeping for rate limit")
-                    time.sleep(60)
-                    rateLimitCounter = 0
+                self._imageHandler.saveImageData(self._gameName+'/game/'+newFilepath,image_data)
+                # # Generate each background image
+                # imageURL = self._generativeAIController.generateBackgroundScene(self.backgroundImageNames[i])
+                # # Get the exact location of where the webp file will be downloaded
+                # webpFilename = self._gameName+'/game/images/'+self.backgroundImageNames[i]+'.webp'
+                # # Check for image declaration
+                # newFilepath = self._scriptHandler.scanForImageDeclaration(self.backgroundImageNames[i])
+                # # Download each image
+                # self._imageHandler.downloadImage(imageURL,webpFilename)
+                # # Convert downloaded image to format we can use, png
+                # self._imageHandler.convertWEBPBackgroundToPNG(webpFilename,self._gameName+'/game/'+newFilepath)
+                # # With a new image created and downloaded we must increment the rateLimitCounter
+                # rateLimitCounter = rateLimitCounter + 1
+                # # If the rate limit has been hit, pause for a full minute before continuinge
+                # if(rateLimitCounter == self._imageCountRateLimit):
+                #     print("Sleeping for rate limit")
+                #     time.sleep(60)
+                #     rateLimitCounter = 0
 
     # Create character images
     def createCharacterImages(self):

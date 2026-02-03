@@ -5,6 +5,7 @@ It will handle downloading and converting them into the proper formats
 
 import requests
 import os
+import base64
 from PIL import Image
 
 class ImageHandler:
@@ -22,11 +23,18 @@ class ImageHandler:
         image = Image.open(filename)
         # Get the new filepath for the name
         filepathParts = os.path.split(newFilepath)
-        print("filepathParts")
+        print("filepathParts:")
         print(filepathParts)
         if(filepathParts[0] != ""):
             os.makedirs(filepathParts[0],exist_ok=True)
         #image.save(filename[:-4]+'jpg', 'JPEG')
+        print("Saving at: " + newFilepath)
         image.save(newFilepath)
+
+    def saveImageData(self,filename,image_data):
+        image_base64 = image_data[0]
+        print("Saving image " + filename + "...")
+        with open(filename,"wb") as f:
+            f.write(base64.b64decode(image_base64))
 
         
